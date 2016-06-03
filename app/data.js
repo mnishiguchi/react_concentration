@@ -1,8 +1,8 @@
 const data = [
-  "ruby",  "python",  "c++",  "java",
-  "ruby",  "python",  "c++",  "java",
-  "ruby",  "python",  "c++",  "java",
-  "ruby",  "python",  "c++",  "java",
+  "gyudon",  "tonkatsu",  "kimuchi",  "sakana",
+  "aji",  "suchi",  "katudon",  "soba",
+  "kare",  "ramen",  "kusshikatsu",  "shake",
+  "yasai",  "hakusai",  "misoshiru",  "gohan",
 ];
 
 export default data;
