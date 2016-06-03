@@ -105,3 +105,8 @@ props:
 props:
   isSwitchedOn: Boolean
 ```
+
+
+### References
+
+- [Timer example](https://facebook.github.io/react/)

@@ -37,6 +37,7 @@ body {
 h1 {
   font-size: 48px;
   line-height: 48px;
+  margin-bottom: 40px;
   color: #268bd2;
 }
 button {
@@ -49,6 +50,20 @@ button {
   cursor: pointer;
   border:none;
   padding: 10px;
+}
+.board {
+  display: block;
+  margin: 0 auto;
+  background-color: #ddd;
+  width: 400px;
+  height: auto;
+  overflow-y: auto;
+}
+.card {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
 }
 @media screen and (min-width: 600px) {
   .wrap {
