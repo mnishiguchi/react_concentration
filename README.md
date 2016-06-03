@@ -42,7 +42,7 @@ Gold
   Next steps to maximize return on investment (ROI).
 ```
 
-### User stories for this project
+### User stories
 
 #### Bronze
 
@@ -67,3 +67,41 @@ Gold
   + Button click animation
   + When I matched two cards
   + When two cards did not match
+
+
+### Components
+
+```yaml
+# App component
+state:
+  isStarted: Boolean
+  score: Number
+  contents: Array<String>
+methods:
+  handleClickGameSwitch: Function
+  isMatchedPair: Function
+  isTwoCardFlipped: Function
+  handleTimeUp: Function
+
+# Card component
+props:
+  isFlipped: Boolean
+  content: String
+  handleClickGameSwitch: Function
+
+# Timer component
+props:
+  time: Number
+methods:
+  startTimer: Function
+  stopTimer: Function
+
+# Score component
+props:
+  score: Number
+  handleTimeUp: Function
+
+# Game switch component
+props:
+  isSwitchedOn: Boolean
+```

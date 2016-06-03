@@ -1,16 +1,15 @@
 {
   "private": true,
-  "name": "react-blog",
+  "name": "react_concentration",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "production": "webpack -p",
     "start": "webpack-dev-server"
   },
   "keywords": [],
-  "author": "",
+  "author": "Masatoshi Nisihguchi",
   "license": "ISC",
   "dependencies": {
     "react": "^15.1.0",
