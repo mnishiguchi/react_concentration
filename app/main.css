@@ -1,0 +1,58 @@
+/**
+ * Reset CSS
+ */
+* {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: inherit;
+  font-style: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  letter-spacing: inherit;
+  color: inherit;
+  background-color: transparent;
+  list-style-type: none;
+  box-sizing: border-box;
+}
+*:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+
+/**
+ * Typography, layout
+ */
+html {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  background-color: #fefefe;
+  text-align: center;
+}
+body {
+  padding: 20px;
+}
+h1 {
+  font-size: 48px;
+  line-height: 48px;
+  color: #268bd2;
+}
+button {
+  background-color: #ccc;
+  border-radius:6px;
+  color: #fff;
+  font-family: 'Oswald';
+  font-size: 20px;
+  text-decoration: none;
+  cursor: pointer;
+  border:none;
+  padding: 10px;
+}
+@media screen and (min-width: 600px) {
+  .wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
