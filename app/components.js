@@ -1,13 +1,16 @@
 import React from 'react';
 
 /**
- * props: isStarted, text
+ * props: isStarted, text, handleClickGameSwitch
  */
 export const GameSwitch = props => {
+  const handleClickGameSwitch = props.handleClickGameSwitch;
   const isStarted = props.isStarted;
   const text = isStarted ? "Pause" : "Start";
   return (
-    <button className="game-switch">
+    <button
+      className="game-switch"
+      onClick={ handleClickGameSwitch }>
       { text }
     </button>
   );
@@ -28,10 +31,10 @@ export const Score = props => {
 /**
  * props: time
  */
-export const Timer = props => {
+export const Time = props => {
   const time = props.time;
   return (
-    <div className="timer">
+    <div className="time">
       { time }
     </div>
   );

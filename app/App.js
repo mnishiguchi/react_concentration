@@ -1,5 +1,5 @@
 import React from 'react';
-import { Board, Timer, Card, Score, GameSwitch } from './components.js';
+import { Board, Time, Card, Score, GameSwitch } from './components.js';
 
 // https://facebook.github.io/react/docs/reusable-components.html
 export default class App extends React.Component {
@@ -12,12 +12,15 @@ export default class App extends React.Component {
       data:  props.data,
       pair:  []
     };
+
+    // Bind the methods to this instance.
     this.handleClickGameSwitch = this.handleClickGameSwitch.bind( this );
     this.isMatchedPair         = this.isMatchedPair.bind( this );
     this.isTwoCardsFlipped     = this.isTwoCardsFlipped.bind( this );
     this.handleTimeUp          = this.handleTimeUp.bind( this );
   }
   handleClickGameSwitch( ev ) {
+    console.log(ev);
     this.setState({
       isStarted: ! this.state.isStarted
     });
@@ -41,9 +44,9 @@ export default class App extends React.Component {
         <header>
           <GameSwitch
             isStarted={ this.state.isStarted }
-            onClick={ (ev) => handleClickGameSwitch } />
+            handleClickGameSwitch={ this.handleClickGameSwitch } />
           <Score score={ this.state.score } />
-          <Timer time={ this.state.time } />
+          <Time time={ this.state.time } />
         </header>
         <Board data={ this.state.data } />
       </div>
