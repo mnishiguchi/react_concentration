@@ -1,5 +1,9 @@
 import React from 'react';
-import { Board, Time, Card, Score, GameSwitch } from './components.js';
+import * as shortid from 'shortid';  // Usage: shortid.generate()
+import Board      from './components/Board';
+import Time       from './components/Time';
+import Score      from './components/Score';
+import GameSwitch from './components/GameSwitch';
 
 // https://facebook.github.io/react/docs/reusable-components.html
 export default class App extends React.Component {

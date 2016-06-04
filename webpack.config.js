@@ -10,8 +10,8 @@ var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 });
 
 
-// Given plenty of places expect absolute paths, we can avoid confusion by
-// using absolute paths everywhere.
+// Given plenty of places expect absolute paths,
+// we can avoid confusion by using absolute paths everywhere.
 const PATHS = {
   app:  path.join(__dirname, 'app'),
   dist: path.join(__dirname, 'dist')
@@ -26,13 +26,19 @@ module.exports = {
     path: PATHS.dist,
     filename: 'index_bundle.js'
   },
+  // http://webpack.github.io/docs/configuration.html
+  resolve: {
+    root: path.resolve(__dirname),
+    // To require('file') instead of require('file.js')
+    extensions: ['', '.js', '.jsx']
+  },
   plugins: [
     HtmlWebpackPluginConfig
   ],
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?/,
         exclude: /node_modules/,
         loaders: ['babel']
       },
