@@ -3,14 +3,14 @@ import React, { PropTypes } from 'react';
 // https://facebook.github.io/react/docs/reusable-components.html
 // https://github.com/airbnb/javascript/tree/master/react#ordering
 const propTypes = {
-  time: PropTypes.number.isRequired,
+  seconds: PropTypes.number.isRequired,
 };
 
 export const Time = props => {
-  const time = props.time;
+  const seconds = props.seconds;
   return (
     <div className="time">
-      { time }
+      { seconds }
     </div>
   );
 };
