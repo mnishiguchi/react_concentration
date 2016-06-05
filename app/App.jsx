@@ -1,16 +1,19 @@
 import React, { PropTypes } from 'react';
-import * as shortid from 'shortid';  // Usage: shortid.generate()
-import Board      from './components/Board';
-import Time       from './components/Time';
-import Score      from './components/Score';
-import GameSwitch from './components/GameSwitch';
+import { EventEmitter }     from 'fbemitter';
+import * as shortid from 'shortid';
+import Board        from './components/Board';
+import Time         from './components/Time';
+import Score        from './components/Score';
+import GameSwitch   from './components/GameSwitch';
 
 const propTypes = {
-  data: PropTypes.array.isRequired
+  data:    PropTypes.array.isRequired,
+  score:   PropTypes.number,
+  seconds: PropTypes.number
 };
 
 const defaultProps = {
-  score: 0,
+  score:   0,
   seconds: 5
 };
 
@@ -20,17 +23,45 @@ class App extends React.Component {
     super( props );
     this.state = {
       isPlaying: false,
-      score:   defaultProps.score,
-      seconds: defaultProps.seconds,
-      data:    this.initData(),
-      pair:    []
+      score:     defaultProps.score,
+      seconds:   defaultProps.seconds,
+      data:      this.initData(),
+      pair:      []
     };
 
     // Bind the methods to this instance.
-    // https://github.com/airbnb/javascript/tree/master/react#methods
-    this.handleClickSwitch = this.handleClickSwitch.bind( this );
-    this.handleClickCard   = this.handleClickCard.bind( this );
-    this.countDown         = this.countDown.bind( this );
+    this.countDown = this.countDown.bind( this );
+  }
+
+  // https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods
+  // http://qiita.com/mmmpa/items/89a8886a1e9c8df477d7
+  // http://qiita.com/mizchi/items/6a3500e598ec36746509
+  componentWillMount() {
+    console.log('componentWillMount');
+
+    // Create a emitter.
+    this.emitter = new EventEmitter;
+
+    // Handle switching on/off the game.
+    this.emitter.addListener( 'clickedSwitch', () => {
+      this.state.isPlaying ? this.pause() : this.start();
+      this.setState({ isPlaying: ! this.state.isPlaying });
+    });
+
+    // Handle flipping a card.
+    this.emitter.addListener( 'flipped', uuid => {
+      const newData = this.state.data.map( item => {
+        // Flip the card that is specified by uuid.
+        if ( item.uuid === uuid ) { item.isFlipped = true; }
+        return item;
+      });
+
+      this.setState({ data: newData });
+    });
+  }
+
+  componentWillUnmount() {
+    this.emitter.removeAllListeners();
   }
 
   initData() {
@@ -44,9 +75,7 @@ class App extends React.Component {
   }
 
   countDown() {
-    this.setState({
-      seconds: this.state.seconds - 1
-    });
+    this.setState({ seconds: this.state.seconds - 1 });
 
     if ( this.state.seconds === 0 ) {
       this.timeUp();
@@ -87,37 +116,7 @@ class App extends React.Component {
   }
 
   clearScore() {
-    this.setState({
-      score: 0
-    });
-  }
-
-  handleClickSwitch( ev ) {
-
-    if ( this.state.isPlaying ) {
-      this.pause();
-
-    } else { // If not playing
-      this.start();
-    }
-
-    this.setState({
-      isPlaying: ! this.state.isPlaying
-    });
-  }
-
-  handleClickCard( uuid ) {
-    // Flip the card.
-    const newData = this.state.data.map( (item) => {
-      if ( item.uuid === uuid ) {
-        item.isFlipped = true;
-      }
-      return item;
-    });
-
-    this.setState({
-      data: newData
-    });
+    this.setState({ score: 0 });
   }
 
   isMatchedPair( ev ) {
@@ -134,15 +133,15 @@ class App extends React.Component {
         <h1>React concentration app</h1>
         <header>
           <GameSwitch
-            isPlaying={ this.state.isPlaying }
-            handleClickSwitch={ this.handleClickSwitch }
+            isPlaying={this.state.isPlaying}
+            emitter={this.emitter}
           />
-          <Score score={ this.state.score } />
-          <Time seconds={ this.state.seconds } />
+          <Score score={this.state.score} />
+          <Time seconds={this.state.seconds} />
         </header>
         <Board
-          data={ this.state.data }
-          handleClickCard={ this.handleClickCard }/>
+          data={this.state.data}
+          emitter={this.emitter} />
       </div>
     );
   }

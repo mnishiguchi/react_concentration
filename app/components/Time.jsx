@@ -6,10 +6,10 @@ const propTypes = {
   seconds: PropTypes.number.isRequired,
 };
 
-const Time = props => {
+function Time({ seconds }) {
   return (
     <div className="time">
-      { props.seconds }
+      {seconds}
     </div>
   );
 };

@@ -4,15 +4,15 @@ import React, { PropTypes } from 'react';
 // https://github.com/airbnb/javascript/tree/master/react#ordering
 const propTypes = {
   isPlaying: PropTypes.bool.isRequired,
-  handleClickSwitch: PropTypes.func.isRequired,
+  emitter: PropTypes.object.isRequired
 };
 
-const GameSwitch = props => {
+function GameSwitch({ isPlaying, emitter }) {
   return (
     <button
       className="game-switch"
-      onClick={ props.handleClickSwitch }>
-      { props.isPlaying ? 'Pause' : 'Start' }
+      onClick={e => emitter.emit( 'clickedSwitch' )}>
+      {isPlaying ? 'Pause' : 'Start'}
     </button>
   );
 };

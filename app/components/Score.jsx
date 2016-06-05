@@ -6,10 +6,10 @@ const propTypes = {
   score: PropTypes.number.isRequired,
 };
 
-const Score = props => {
+function Score({ score }) {
   return (
     <div className="score">
-      { props.score }
+      {score}
     </div>
   );
 };

@@ -7,16 +7,26 @@ Configured based on [react-intro](https://github.com/ga-wdi-lessons/react-intro)
 
 ### Usage
 
-```
-npm install
-npm start
-open http://localhost:8080
+```bash
+$ npm install
+$ npm start
+$ open http://localhost:8080
 ```
 
 ### [Deploying a subfolder to GitHub Pages](https://gist.github.com/cobyism/4730490)
 
+```bash
+$ git deploy
 ```
+
+```bash
+# Deploying a subfolder to GitHub Pages
 $ git subtree push --prefix dist origin gh-pages
+```
+
+```bash
+# Delete a remote branch
+$ git push origin :gh-pages
 ```
 
 ### User story guideline
@@ -109,4 +119,13 @@ props:
 
 ### References
 
+- [React.js Fundamentals](http://courses.reactjsprogram.com/courses/reactjsfundamentals)
+- [Airbnb React/JSX Style Guide](https://github.com/airbnb/javascript/tree/master/react)
+- [Index as a key is an anti-pattern](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318#.r0mrtt6b4)
 - [Timer example](https://facebook.github.io/react/)
+- [Angular Directives Mapped to React](https://daveceddia.com/angular-directives-mapped-to-react/)
+- [Tools for React](https://github.com/facebook/react/wiki/Complementary-Tools)
+- [React on ES6+](https://babeljs.io/blog/2015/06/07/react-on-es6-plus)
+- [Deploying a subfolder to GitHub Pages](https://gist.github.com/cobyism/4730490)
+- [EventEmitterバケツリレースタイル/フレームワークなしで小さくFluxするß](http://qiita.com/mizchi/items/6a3500e598ec36746509)
+- [入れ子のReact.ComponentでcomponentWillMountとcomponentDidMountが呼ばれる順番。](http://qiita.com/mmmpa/items/89a8886a1e9c8df477d7)
