@@ -5,14 +5,22 @@ import Card from './Card';
 // https://github.com/airbnb/javascript/tree/master/react#ordering
 const propTypes = {
   data: PropTypes.array.isRequired,
+  handleClickCard: PropTypes.func.isRequired
 };
 
-export const Board = props => {
-  const data = props.data;
+const Board = props => {
   return (
     <div className="board">
       {
-        data.map( (content, i) => <Card key={ i } content={ content } /> )
+        props.data.map( (item) =>
+          <Card
+            key={ item.uuid }
+            uuid={ item.uuid }
+            text={ item.text }
+            isFlipped={ item.isFlipped }
+            handleClickCard={ props.handleClickCard }
+          />
+        )
       }
     </div>
   );

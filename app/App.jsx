@@ -9,22 +9,38 @@ const propTypes = {
   data: PropTypes.array.isRequired
 };
 
+const defaultProps = {
+  score: 0,
+  seconds: 5
+};
+
 // https://facebook.github.io/react/docs/reusable-components.html
 class App extends React.Component {
   constructor( props ) {
     super( props );
     this.state = {
       isPlaying: false,
-      score: 0,
-      seconds: 5,
-      data:  props.data,
-      pair:  []
+      score:   defaultProps.score,
+      seconds: defaultProps.seconds,
+      data:    this.initData(),
+      pair:    []
     };
 
     // Bind the methods to this instance.
     // https://github.com/airbnb/javascript/tree/master/react#methods
     this.handleClickSwitch = this.handleClickSwitch.bind( this );
+    this.handleClickCard   = this.handleClickCard.bind( this );
     this.countDown         = this.countDown.bind( this );
+  }
+
+  initData() {
+    return this.props.data.map( text => {
+      return {
+        uuid:      shortid.generate(),
+        isFlipped: false,
+        text:      text
+      };
+    });
   }
 
   countDown() {
@@ -36,38 +52,52 @@ class App extends React.Component {
       this.timeUp();
     }
   }
+
   start() {
     console.log( 'start' );
-    this.timerId = setInterval( this.countDown, 1000 );
+    this.startTimer();
   }
+
   pause() {
     console.log( 'pause' );
     this.stopTimer();
   }
+
   reset() {
     console.log( 'reset' );
-    this.stopTimer();
+    this.pause();
+    this.setState({
+      isPlaying: false,
+      seconds: defaultProps.seconds
+    });
   }
+
+  startTimer() {
+    this.timerId = setInterval( this.countDown, 1000 );
+  }
+
   stopTimer() {
     clearInterval( this.timerId );
     this.timerId = null;
   }
+
   timeUp() {
     console.log( 'Time is up!' );
-    this.pause();
+    this.reset();
+  }
+
+  clearScore() {
     this.setState({
-      isPlaying: false
+      score: 0
     });
   }
+
   handleClickSwitch( ev ) {
 
-    // If the date is currently playing
     if ( this.state.isPlaying ) {
-      // Stop the seconds
       this.pause();
 
     } else { // If not playing
-      // Start the seconds
       this.start();
     }
 
@@ -75,12 +105,29 @@ class App extends React.Component {
       isPlaying: ! this.state.isPlaying
     });
   }
+
+  handleClickCard( uuid ) {
+    // Flip the card.
+    const newData = this.state.data.map( (item) => {
+      if ( item.uuid === uuid ) {
+        item.isFlipped = true;
+      }
+      return item;
+    });
+
+    this.setState({
+      data: newData
+    });
+  }
+
   isMatchedPair( ev ) {
     return false; // TODO;
   }
+
   isTwoCardsFlipped( ev ) {
     return this.state.pair.length < 1;
   }
+
   render() {
     return (
       <div>
@@ -93,12 +140,15 @@ class App extends React.Component {
           <Score score={ this.state.score } />
           <Time seconds={ this.state.seconds } />
         </header>
-        <Board data={ this.state.data } />
+        <Board
+          data={ this.state.data }
+          handleClickCard={ this.handleClickCard }/>
       </div>
     );
   }
 }
 
 App.propTypes = propTypes;
+App.defaultProps = defaultProps;
 
 export default App;

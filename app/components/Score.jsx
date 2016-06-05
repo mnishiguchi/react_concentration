@@ -6,11 +6,10 @@ const propTypes = {
   score: PropTypes.number.isRequired,
 };
 
-export const Score = props => {
-  const score = props.score;
+const Score = props => {
   return (
     <div className="score">
-      { score }
+      { props.score }
     </div>
   );
 };

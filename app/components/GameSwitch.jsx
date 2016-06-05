@@ -7,15 +7,12 @@ const propTypes = {
   handleClickSwitch: PropTypes.func.isRequired,
 };
 
-export const GameSwitch = props => {
-  const handleClickSwitch = props.handleClickSwitch;
-  const isPlaying = props.isPlaying;
-  const text = isPlaying ? 'Pause' : 'Start';
+const GameSwitch = props => {
   return (
     <button
       className="game-switch"
-      onClick={ handleClickSwitch }>
-      { text }
+      onClick={ props.handleClickSwitch }>
+      { props.isPlaying ? 'Pause' : 'Start' }
     </button>
   );
 };

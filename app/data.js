@@ -1,8 +1,8 @@
 const data = [
-  "gyudon",  "tonkatsu",  "kimuchi",  "sakana",
-  "aji",  "suchi",  "katudon",  "soba",
-  "kare",  "ramen",  "kusshikatsu",  "shake",
-  "yasai",  "hakusai",  "misoshiru",  "gohan",
+  "A",  "B",  "C",  "D",
+  "Z",  "Y",  "X",  "W",
+  "A",  "B",  "C",  "D",
+  "Z",  "Y",  "X",  "W"
 ];
 
 export default data;
