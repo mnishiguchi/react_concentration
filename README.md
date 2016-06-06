@@ -119,6 +119,26 @@ props:
   isSwitchedOn: Boolean
 ```
 
+### Memo
+#### Creating elements using loop in React
+
+```js
+function BarGraph({ score }) {
+  return (
+    <div className="bar-graph">
+      {
+        Array(16).fill(1).map( (el, i) => {
+          return ( i < score )
+                      ? <div className="pixel filled"></div>
+                      : <div className="pixel"></div>
+                      ;
+          }
+        )
+      }
+    </div>
+  );
+};
+```
 
 ### References
 

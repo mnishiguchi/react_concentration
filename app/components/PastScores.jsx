@@ -7,9 +7,9 @@ const propTypes = {
 };
 
 function PastScores({ pastScores }) {
-  return (
+  return ( pastScores.length > 0 ) && (
     <div>
-      <h4>Past scores</h4>
+      <h4>Your scores</h4>
       <table className="past-scores">
         <tbody>
           {

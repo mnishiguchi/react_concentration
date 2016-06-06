@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
 import { EventEmitter }     from 'fbemitter';
-import * as shortid from 'shortid';
-import Time         from './components/Time';
-import Score        from './components/Score';
-import Board        from './components/Board';
-import GameSwitch   from './components/GameSwitch';
-import PastScores   from './components/PastScores';
+import * as shortid  from 'shortid';
+import Time          from './components/Time';
+import Score         from './components/Score';
+import Board         from './components/Board';
+import GameControl   from './components/GameControl';
+import LevelSelector from './components/LevelSelector';
+import PastScores    from './components/PastScores';
 
 const propTypes = {
   data:    PropTypes.array.isRequired,
@@ -15,7 +16,7 @@ const propTypes = {
 
 const defaultProps = {
   score:   0,
-  seconds: 5
+  seconds: 30
 };
 
 // https://facebook.github.io/react/docs/reusable-components.html
@@ -41,6 +42,14 @@ class App extends React.Component {
   componentWillMount() {
     // Create a emitter.
     this.emitter = new EventEmitter;
+
+    // Handle setting the level.
+    this.emitter.addListener( 'selectedLevel', level => {
+      if ( ! this.state.isPlaying ) {
+        console.log(level);
+        this.setDifficulty( level );
+      }
+    });
 
     // Handle switching on/off the game.
     this.emitter.addListener( 'clickedSwitch', () => {
@@ -80,6 +89,15 @@ class App extends React.Component {
     }
   }
 
+  setDifficulty( level ) {
+    switch( level ) {
+      case 1: this.setState({ seconds: 30 }); return;
+      case 2: this.setState({ seconds: 20 }); return;
+      case 3: this.setState({ seconds: 10 }); return;
+    }
+    this.setState({ seconds: value });
+  }
+
   start() {
     console.log( 'start' );
     this.reset();
@@ -106,7 +124,6 @@ class App extends React.Component {
       isPlaying: false,
       isOnPause: false,
       score:     defaultProps.score,
-      seconds:   defaultProps.seconds,
       data:      this.initData(),
       firstCard: null
     });
@@ -204,17 +221,16 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <header>
-          <Score score={this.state.score} />
-          <Time seconds={this.state.seconds} />
-        </header>
-
-        <section>
+        <section className="game">
+          <header>
+            <Score score={this.state.score} />
+            <Time seconds={this.state.seconds} />
+          </header>
           <Board
             data={this.state.data}
             isLocked={!this.state.isPlaying || this.state.isOnPause}
             emitter={this.emitter} />
-          <GameSwitch
+          <GameControl
             isPlaying={this.state.isPlaying}
             isOnPause={this.state.isOnPause}
             emitter={this.emitter}

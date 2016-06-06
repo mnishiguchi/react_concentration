@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Icon } from 'react-fa'
+import { Icon }   from 'react-fa'
 import * as Utils from '../utils';
 
 // https://facebook.github.io/react/docs/reusable-components.html
