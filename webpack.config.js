@@ -14,8 +14,9 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
 // Given plenty of places expect absolute paths,
 // we can avoid confusion by using absolute paths everywhere.
 const PATHS = {
-  app:  path.join(__dirname, 'app'),
-  dist: path.join(__dirname, 'dist')
+  app:   path.join(__dirname, 'app'),
+  dist:  path.join(__dirname, 'dist'),
+  style: path.join(__dirname, 'app/scss')
 };
 
 module.exports = {
@@ -54,7 +55,7 @@ module.exports = {
     HtmlWebpackPluginConfig,
     new webpack.HotModuleReplacementPlugin(),
     new NpmInstallPlugin({
-      save: true // --save
+      save: true
     })
   ],
   module: {
@@ -66,13 +67,14 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test:    /\.css$/,
+        test:    /\.scss$/,
+        // `sass-loader`:
         // `css-loader`:   resolves @import and url statements in our CSS files.
         // `style-loader`: resolves require statements in our JavaScript.
-        loaders: ['style', 'css'],
+        loaders: ['style', 'css', 'sass'],
         // `include` accepts either a path or an array of paths.
-        include: PATHS.app
-      }
+        include: PATHS.style
+      },
     ]
   }
 };

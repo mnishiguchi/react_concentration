@@ -1,0 +1,32 @@
+button {
+  background-color: #ccc;
+  border-radius:6px;
+  color: #fff;
+  font-family: 'Oswald';
+  font-size: 20px;
+  text-decoration: none;
+  cursor: pointer;
+  border:none;
+  padding: 10px;
+}
+.board {
+  display: block;
+  margin: 0 auto;
+  background-color: #ddd;
+  width: 400px;
+  height: auto;
+  overflow-y: auto;
+}
+.card {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  font-size: 40px;
+}
+@media screen and (min-width: 600px) {
+  .wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}

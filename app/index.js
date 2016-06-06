@@ -1,5 +1,5 @@
 // Load styles using style-loader.
-require('./main.css');
+require('./scss/main.scss');
 
 // Load React.
 import React    from 'react';
