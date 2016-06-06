@@ -5,10 +5,11 @@ import Card from './Card';
 // https://github.com/airbnb/javascript/tree/master/react#ordering
 const propTypes = {
   data: PropTypes.array.isRequired,
+  isLocked: PropTypes.bool.isRequired,
   emitter: PropTypes.object.isRequired
 };
 
-function Board({ data,emitter }) {
+function Board({ data, isLocked, emitter }) {
   return (
     <div className="board">
       {
@@ -19,6 +20,7 @@ function Board({ data,emitter }) {
             text={item.text}
             isFlipped={item.isFlipped}
             isDone={item.isDone}
+            isLocked={isLocked}
             emitter={emitter}
           />
         )

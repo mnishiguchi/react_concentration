@@ -35,7 +35,6 @@ class App extends React.Component {
   }
 
   // https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods
-  // http://qiita.com/mmmpa/items/89a8886a1e9c8df477d7
   // http://qiita.com/mizchi/items/6a3500e598ec36746509
   componentWillMount() {
     // Create a emitter.
@@ -82,25 +81,19 @@ class App extends React.Component {
   start() {
     console.log( 'start' );
     this.startTimer();
-    this.setState({
-      isPlaying: true
-    });
+    this.setState({ isPlaying: true });
   }
 
   pause() {
     console.log( 'pause' );
     this.stopTimer();
-    this.setState({
-      isOnPause: true
-    });
+    this.setState({ isOnPause: true });
   }
 
   resume() {
     console.log( 'resume' );
     this.startTimer();
-    this.setState({
-      isOnPause: false
-    });
+    this.setState({ isOnPause: false });
   }
 
   reset() {
@@ -202,6 +195,7 @@ class App extends React.Component {
         </header>
         <Board
           data={this.state.data}
+          isLocked={!this.state.isPlaying || this.state.isOnPause}
           emitter={this.emitter} />
       </div>
     );
