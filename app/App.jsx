@@ -23,11 +23,11 @@ class App extends React.Component {
     super( props );
     this.state = {
       isPlaying: false,
-      isOnPause:  false,
+      isOnPause: false,
       score:     defaultProps.score,
       seconds:   defaultProps.seconds,
       data:      this.initData(),
-      pair:      []
+      firstCard: null
     };
 
     // Bind the methods to this instance.
@@ -38,8 +38,6 @@ class App extends React.Component {
   // http://qiita.com/mmmpa/items/89a8886a1e9c8df477d7
   // http://qiita.com/mizchi/items/6a3500e598ec36746509
   componentWillMount() {
-    console.log('componentWillMount');
-
     // Create a emitter.
     this.emitter = new EventEmitter;
 
@@ -53,8 +51,8 @@ class App extends React.Component {
     });
 
     // Handle flipping a card.
-    this.emitter.addListener( 'flipped', uuid => {
-      this.flipCard( uuid );
+    this.emitter.addListener( 'flipped', flippedCard => {
+      this.flipCard( flippedCard );
     });
   }
 
@@ -67,6 +65,7 @@ class App extends React.Component {
       return {
         uuid:      shortid.generate(),
         isFlipped: false,
+        isDone:    false,
         text:      text
       };
     });
@@ -133,27 +132,65 @@ class App extends React.Component {
   }
 
   // Flip the card that is specified by uuid.
-  flipCard( uuid ) {
+  flipCard( flippedCard ) {
+
+    // Flip the card.
     const newData = this.state.data.map( item => {
-      if ( item.uuid === uuid ) { item.isFlipped = true; }
+      if ( item.uuid === flippedCard.uuid ) {
+        item.isFlipped = true;
+      }
       return item;
     });
 
+    // If it is the first card, remember it.
+    if ( ! this.state.firstCard ) {
+      this.setState({ firstCard: flippedCard });
+
+    } else { // If it is the second card, compare the two cards.
+      this.judgeCards( this.state.firstCard, flippedCard );
+    }
+    // Update data.
     this.setState({ data: newData });
   }
-  
-  isMatchedPair( ev ) {
-    return false; // TODO;
-  }
 
-  isTwoCardsFlipped( ev ) {
-    return this.state.pair.length < 1;
+  /**
+   * @param  {Object} first  Info about the card that contains uuid and text.
+   * @param  {Object} second Info about the card that contains uuid and text.
+   */
+  judgeCards( first, second ) {
+    if ( first.text === second.text ) {
+      console.log("areMatchingPair: yes");
+
+      // Add points.
+      this.setState({ score: this.state.score + 1 });
+
+      // Mark the matching cards as 'done'.
+      this.state.data.map( item => {
+        if ( item.uuid === first.uuid || item.uuid === second.uuid ) {
+          item.isDone = true;
+        }
+
+        return item;
+      });
+    } else {
+      // Do nothing if the cards are not matching.
+      console.log("areMatchingPair: no");
+    }
+
+    // Clear the first card.
+    this.setState({ firstCard: null });
+
+    // Make all the undone cards face down.
+    this.state.data.map( item => {
+      item.isFlipped = false;
+      return item;
+    });
   }
 
   render() {
     return (
       <div>
-        <h1>React concentration app</h1>
+        <h1>Concentration</h1>
         <header>
           <GameSwitch
             isPlaying={this.state.isPlaying}

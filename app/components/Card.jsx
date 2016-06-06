@@ -6,15 +6,16 @@ const propTypes = {
   uuid: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   isFlipped: PropTypes.bool.isRequired,
+  isDone: PropTypes.bool.isRequired,
   emitter: PropTypes.object.isRequired
 };
 
-function Card({ uuid, text, isFlipped, emitter }) {
+function Card({ uuid, text, isFlipped, isDone, emitter }) {
   return (
     <div
       className="card"
-      onClick={e => emitter.emit( 'flipped', uuid )}>
-      {isFlipped ? text : '?'}
+      onClick={e => emitter.emit( 'flipped', { uuid, text } )}>
+      {isFlipped || isDone ? text : '?'}
     </div>
   )
 };

@@ -18,6 +18,7 @@ function Board({ data,emitter }) {
             uuid={item.uuid}
             text={item.text}
             isFlipped={item.isFlipped}
+            isDone={item.isDone}
             emitter={emitter}
           />
         )

@@ -64,6 +64,7 @@ button {
   width: 100px;
   height: 100px;
   line-height: 100px;
+  font-size: 40px;
 }
 @media screen and (min-width: 600px) {
   .wrap {
