@@ -9,7 +9,7 @@ const propTypes = {
 function Score({ score }) {
   return (
     <div className="score">
-      {score}
+      Score: {score}
     </div>
   );
 };

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack -p",
-    "deploy": "npm run build && git commit -m Build && git push origin :gh-pages && git subtree push --prefix dist origin gh-pages"
+    "deploy": "npm run build && git add dist && git commit -m Build && git push origin :gh-pages && git subtree push --prefix dist origin gh-pages"
   },
   "keywords": [],
   "author": "Masatoshi Nisihguchi",

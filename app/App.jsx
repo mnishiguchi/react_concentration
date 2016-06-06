@@ -23,6 +23,7 @@ class App extends React.Component {
     super( props );
     this.state = {
       isPlaying: false,
+      isOnPause:  false,
       score:     defaultProps.score,
       seconds:   defaultProps.seconds,
       data:      this.initData(),
@@ -44,19 +45,16 @@ class App extends React.Component {
 
     // Handle switching on/off the game.
     this.emitter.addListener( 'clickedSwitch', () => {
-      this.state.isPlaying ? this.pause() : this.start();
-      this.setState({ isPlaying: ! this.state.isPlaying });
+      if ( ! this.state.isPlaying ) {
+        this.start();
+      } else {
+        this.state.isOnPause ? this.resume() : this.pause();
+      }
     });
 
     // Handle flipping a card.
     this.emitter.addListener( 'flipped', uuid => {
-      const newData = this.state.data.map( item => {
-        // Flip the card that is specified by uuid.
-        if ( item.uuid === uuid ) { item.isFlipped = true; }
-        return item;
-      });
-
-      this.setState({ data: newData });
+      this.flipCard( uuid );
     });
   }
 
@@ -85,11 +83,25 @@ class App extends React.Component {
   start() {
     console.log( 'start' );
     this.startTimer();
+    this.setState({
+      isPlaying: true
+    });
   }
 
   pause() {
     console.log( 'pause' );
     this.stopTimer();
+    this.setState({
+      isOnPause: true
+    });
+  }
+
+  resume() {
+    console.log( 'resume' );
+    this.startTimer();
+    this.setState({
+      isOnPause: false
+    });
   }
 
   reset() {
@@ -97,6 +109,7 @@ class App extends React.Component {
     this.pause();
     this.setState({
       isPlaying: false,
+      isOnPause: false,
       seconds: defaultProps.seconds
     });
   }
@@ -119,6 +132,16 @@ class App extends React.Component {
     this.setState({ score: 0 });
   }
 
+  // Flip the card that is specified by uuid.
+  flipCard( uuid ) {
+    const newData = this.state.data.map( item => {
+      if ( item.uuid === uuid ) { item.isFlipped = true; }
+      return item;
+    });
+
+    this.setState({ data: newData });
+  }
+  
   isMatchedPair( ev ) {
     return false; // TODO;
   }
@@ -134,6 +157,7 @@ class App extends React.Component {
         <header>
           <GameSwitch
             isPlaying={this.state.isPlaying}
+            isOnPause={this.state.isOnPause}
             emitter={this.emitter}
           />
           <Score score={this.state.score} />

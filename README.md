@@ -9,15 +9,18 @@ Configured based on [react-intro](https://github.com/ga-wdi-lessons/react-intro)
 
 ```bash
 $ npm install
+```
+
+```bash
 $ npm start
 $ open http://localhost:8080
 ```
 
-### [Deploying a subfolder to GitHub Pages](https://gist.github.com/cobyism/4730490)
-
 ```bash
-$ git deploy
+$ git deploy # Deploying the dist directory to GitHub Pages
 ```
+
+### [Deploying a subfolder to GitHub Pages](https://gist.github.com/cobyism/4730490)
 
 ```bash
 # Deploying a subfolder to GitHub Pages

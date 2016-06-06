@@ -9,7 +9,7 @@ const propTypes = {
 function Time({ seconds }) {
   return (
     <div className="time">
-      {seconds}
+      Time: {seconds}
     </div>
   );
 };
