@@ -5,6 +5,7 @@ import Board        from './components/Board';
 import Time         from './components/Time';
 import Score        from './components/Score';
 import GameSwitch   from './components/GameSwitch';
+import PastScores   from './components/PastScores';
 
 const propTypes = {
   data:    PropTypes.array.isRequired,
@@ -27,7 +28,8 @@ class App extends React.Component {
       score:     defaultProps.score,
       seconds:   defaultProps.seconds,
       data:      this.initData(),
-      firstCard: null
+      firstCard: null,
+      pastScores: []
     };
 
     // Bind the methods to this instance.
@@ -80,6 +82,8 @@ class App extends React.Component {
 
   start() {
     console.log( 'start' );
+    this.pushScoreToHistory();
+    this.reset();
     this.startTimer();
     this.setState({ isPlaying: true });
   }
@@ -102,7 +106,10 @@ class App extends React.Component {
     this.setState({
       isPlaying: false,
       isOnPause: false,
-      seconds: defaultProps.seconds
+      score:     defaultProps.score,
+      seconds:   defaultProps.seconds,
+      data:      this.initData(),
+      firstCard: null
     });
   }
 
@@ -111,17 +118,36 @@ class App extends React.Component {
   }
 
   stopTimer() {
-    clearInterval( this.timerId );
+    if ( this.timerId ) {
+      clearInterval( this.timerId );
+    }
+
     this.timerId = null;
   }
 
   timeUp() {
     console.log( 'Time is up!' );
-    this.reset();
+    this.stopTimer();
+    this.setState({
+      isPlaying: false,
+      isOnPause: false
+    });
   }
 
-  clearScore() {
-    this.setState({ score: 0 });
+  pushScoreToHistory() {
+    if ( this.state.pastScores === [] ) return;
+
+    // Duplicate the Array
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
+    let scores = this.state.pastScores.slice();
+    scores.push([
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+      new Date().toLocaleString(),
+      this.state.score ]);
+    this.setState({
+      score: 0,
+      pastScores: scores
+    });
   }
 
   // Flip the card that is specified by uuid.
@@ -197,6 +223,7 @@ class App extends React.Component {
           data={this.state.data}
           isLocked={!this.state.isPlaying || this.state.isOnPause}
           emitter={this.emitter} />
+        <PastScores pastScores={this.state.pastScores} />
       </div>
     );
   }

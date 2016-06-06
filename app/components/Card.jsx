@@ -14,7 +14,7 @@ const propTypes = {
 function Card({ uuid, text, isFlipped, isDone, isLocked, emitter }) {
   // Only when board is not locked, emit the flipped event.
   const clickHandler = (isLocked)
-                     ? e => alert( "Please click the start button to start the game." )
+                     ? ''
                      : e => emitter.emit( 'flipped', { uuid, text } )
                      ;
   return (
