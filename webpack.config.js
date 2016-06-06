@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const NpmInstallPlugin = require('npm-install-webpack-plugin');
 
 // https://github.com/ampedandwired/html-webpack-plugin
@@ -54,6 +55,7 @@ module.exports = {
   plugins: [
     HtmlWebpackPluginConfig,
     new webpack.HotModuleReplacementPlugin(),
+    new ExtractTextPlugin('bundle.css'),
     new NpmInstallPlugin({
       save: true
     })
@@ -68,13 +70,23 @@ module.exports = {
       },
       {
         test:    /\.scss$/,
-        // `sass-loader`:
         // `css-loader`:   resolves @import and url statements in our CSS files.
         // `style-loader`: resolves require statements in our JavaScript.
         loaders: ['style', 'css', 'sass'],
-        // `include` accepts either a path or an array of paths.
         include: PATHS.style
       },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff'
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader'
+      }
     ]
   }
 };

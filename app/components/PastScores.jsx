@@ -10,15 +10,18 @@ function PastScores({ pastScores }) {
   return (
     <div>
       <h4>Past scores</h4>
-      <ul className="past-scores">
-        {
-          pastScores.map( (scoreData, i) =>
-            <li key={i}>
-              {scoreData[0]}: {scoreData[1]}
-            </li>
-          )
-        }
-      </ul>
+      <table className="past-scores">
+        <tbody>
+          {
+            pastScores.map( (scoreData, i) =>
+              <tr key={i}>
+                <td>{scoreData[0]}</td>
+                <td>{scoreData[1]}</td>
+              </tr>
+            )
+          }
+        </tbody>
+      </table>
     </div>
   );
 };

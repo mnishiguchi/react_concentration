@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { EventEmitter }     from 'fbemitter';
 import * as shortid from 'shortid';
-import Board        from './components/Board';
 import Time         from './components/Time';
 import Score        from './components/Score';
+import Board        from './components/Board';
 import GameSwitch   from './components/GameSwitch';
 import PastScores   from './components/PastScores';
 
@@ -82,7 +82,6 @@ class App extends React.Component {
 
   start() {
     console.log( 'start' );
-    this.pushScoreToHistory();
     this.reset();
     this.startTimer();
     this.setState({ isPlaying: true });
@@ -118,16 +117,17 @@ class App extends React.Component {
   }
 
   stopTimer() {
-    if ( this.timerId ) {
-      clearInterval( this.timerId );
-    }
+    // If timer id exists, stop the timer.
+    if ( this.timerId ) { clearInterval( this.timerId ); }
 
+    // Clear timer id.
     this.timerId = null;
   }
 
   timeUp() {
     console.log( 'Time is up!' );
     this.stopTimer();
+    this.pushScoreToHistory();
     this.setState({
       isPlaying: false,
       isOnPause: false
@@ -135,19 +135,14 @@ class App extends React.Component {
   }
 
   pushScoreToHistory() {
-    if ( this.state.pastScores === [] ) return;
-
-    // Duplicate the Array
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
-    let scores = this.state.pastScores.slice();
-    scores.push([
+    // ES2015 array desctuctor.
+    let scores = [ ...this.state.pastScores ];
+    scores.unshift([
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
       new Date().toLocaleString(),
-      this.state.score ]);
-    this.setState({
-      score: 0,
-      pastScores: scores
-    });
+      this.state.score
+    ]);
+    this.setState({ pastScores: scores });
   }
 
   // Flip the card that is specified by uuid.
@@ -209,21 +204,25 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>Concentration</h1>
         <header>
+          <Score score={this.state.score} />
+          <Time seconds={this.state.seconds} />
+        </header>
+
+        <section>
+          <Board
+            data={this.state.data}
+            isLocked={!this.state.isPlaying || this.state.isOnPause}
+            emitter={this.emitter} />
           <GameSwitch
             isPlaying={this.state.isPlaying}
             isOnPause={this.state.isOnPause}
             emitter={this.emitter}
           />
-          <Score score={this.state.score} />
-          <Time seconds={this.state.seconds} />
-        </header>
-        <Board
-          data={this.state.data}
-          isLocked={!this.state.isPlaying || this.state.isOnPause}
-          emitter={this.emitter} />
-        <PastScores pastScores={this.state.pastScores} />
+        </section>
+        <aside>
+          <PastScores pastScores={this.state.pastScores} />
+        </aside>
       </div>
     );
   }
