@@ -15,6 +15,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  level:   1,
   score:   0,
   seconds: 30
 };
@@ -26,6 +27,7 @@ class App extends React.Component {
     this.state = {
       isPlaying: false,
       isOnPause: false,
+      level:     defaultProps.level,
       score:     defaultProps.score,
       seconds:   defaultProps.seconds,
       data:      this.initData(),
@@ -91,16 +93,24 @@ class App extends React.Component {
 
   setDifficulty( level ) {
     switch( level ) {
-      case 1: this.setState({ seconds: 30 }); return;
-      case 2: this.setState({ seconds: 20 }); return;
-      case 3: this.setState({ seconds: 10 }); return;
+      case 1:
+        this.setState({ level: level, seconds: 30 });
+        return;
+      case 2:
+        this.setState({ level: level, seconds: 20 });
+        return;
+      case 3:
+        this.setState({ level: level, seconds: 10 });
+        return;
+      default:
+        this.setState({ level: level, seconds: 30 });
     }
-    this.setState({ seconds: value });
   }
 
   start() {
     console.log( 'start' );
     this.reset();
+    if ( this.state.seconds === 0 ) { this.setDifficulty( this.state.level ); } 
     this.startTimer();
     this.setState({ isPlaying: true });
   }
@@ -152,7 +162,7 @@ class App extends React.Component {
   }
 
   pushScoreToHistory() {
-    // ES2015 array desctuctor.
+    // ES2015 array destructor.
     let scores = [ ...this.state.pastScores ];
     scores.unshift([
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
@@ -229,7 +239,8 @@ class App extends React.Component {
           <Board
             data={this.state.data}
             isLocked={!this.state.isPlaying || this.state.isOnPause}
-            emitter={this.emitter} />
+            emitter={this.emitter}
+          />
           <GameControl
             isPlaying={this.state.isPlaying}
             isOnPause={this.state.isOnPause}
