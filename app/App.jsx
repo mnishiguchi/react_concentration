@@ -8,28 +8,28 @@ import GameControl   from './components/GameControl';
 import LevelSelector from './components/LevelSelector';
 import PastScores    from './components/PastScores';
 
-const propTypes = {
-  data:    PropTypes.array.isRequired,
-  score:   PropTypes.number,
-  seconds: PropTypes.number
-};
-
-const defaultProps = {
-  level:   1,
-  score:   0,
-  seconds: 30
-};
-
-// https://facebook.github.io/react/docs/reusable-components.html
 class App extends React.Component {
+
+  static propTypes = {
+    data:    PropTypes.array.isRequired,
+    score:   PropTypes.number,
+    seconds: PropTypes.number
+  };
+
+  static defaultProps = {
+    level:   1,
+    score:   0,
+    seconds: 30
+  };
+
   constructor( props ) {
     super( props );
     this.state = {
       isPlaying: false,
       isOnPause: false,
-      level:     defaultProps.level,
-      score:     defaultProps.score,
-      seconds:   defaultProps.seconds,
+      level:     this.props.level,
+      score:     this.props.score,
+      seconds:   this.props.seconds,
       data:      this.initData(),
       firstCard: null,
       pastScores: []
@@ -110,7 +110,7 @@ class App extends React.Component {
   start() {
     console.log( 'start' );
     this.reset();
-    if ( this.state.seconds === 0 ) { this.setDifficulty( this.state.level ); } 
+    if ( this.state.seconds === 0 ) { this.setDifficulty( this.state.level ); }
     this.startTimer();
     this.setState({ isPlaying: true });
   }
@@ -183,15 +183,24 @@ class App extends React.Component {
       return item;
     });
 
-    // If it is the first card, remember it.
-    if ( ! this.state.firstCard ) {
-      this.setState({ firstCard: flippedCard });
-
-    } else { // If it is the second card, compare the two cards.
-      this.judgeCards( this.state.firstCard, flippedCard );
-    }
     // Update data.
     this.setState({ data: newData });
+
+    // Pause for 1 sec.
+    window.setTimeout( function() {
+
+      // If it is the first card, remember it.
+      if ( ! this.state.firstCard ) {
+        this.setState({ firstCard: flippedCard });
+
+      } else { // If it is the second card, compare the two cards.
+        this.judgeCards( this.state.firstCard, flippedCard );
+      }
+
+      // Update data.
+      this.setState({ data: newData });
+
+    }.bind( this ), 1000 );
   }
 
   /**
@@ -254,8 +263,5 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = propTypes;
-App.defaultProps = defaultProps;
 
 export default App;

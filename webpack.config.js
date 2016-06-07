@@ -9,15 +9,16 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
     template: __dirname + "/app/index.html",
     filename: "index.html",
-    inject: "body"
+    inject: "body"  // Inject all assets into body.
 });
 
 // Given plenty of places expect absolute paths,
 // we can avoid confusion by using absolute paths everywhere.
 const PATHS = {
-  app:   path.join(__dirname, 'app'),
-  dist:  path.join(__dirname, 'dist'),
-  style: path.join(__dirname, 'app/scss')
+  app:    path.join(__dirname, 'app'),
+  dist:   path.join(__dirname, 'dist'),
+  style:  path.join(__dirname, 'app/scss'),
+  images: path.join(__dirname, 'app/images')
 };
 
 module.exports = {
@@ -72,7 +73,7 @@ module.exports = {
         test:    /\.scss$/,
         // `css-loader`:   resolves @import and url statements in our CSS files.
         // `style-loader`: resolves require statements in our JavaScript.
-        loaders: ['style', 'css', 'sass'],
+        loaders: ['style', 'css', 'autoprefixer', 'sass'],
         include: PATHS.style
       },
       {
@@ -87,6 +88,24 @@ module.exports = {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
       }
+      // {
+      //   test: /\.(jpg|png)$/,
+      //   loader: 'url?limit=25000',
+      //   include: PATHS.images
+      // },
+      // {
+      //   test: /\.svg$/,
+      //   loader: 'file',
+      //   include: PATHS.images
+      // }
+      // {
+      //   test: /\.(png|jpg|gif)$/,
+      //   loader: "file-loader?name=images/img-[hash:6].[ext]"
+      // },
+      // {
+      //   test: /\.html$/,
+      //   loader: "html-loader"
+      // }
     ]
   }
 };

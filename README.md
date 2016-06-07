@@ -152,3 +152,7 @@ function BarGraph({ score }) {
 - [Deploying a subfolder to GitHub Pages](https://gist.github.com/cobyism/4730490)
 - [EventEmitterバケツリレースタイル/フレームワークなしで小さくFluxするß](http://qiita.com/mizchi/items/6a3500e598ec36746509)
 - [入れ子のReact.ComponentでcomponentWillMountとcomponentDidMountが呼ばれる順番。](http://qiita.com/mmmpa/items/89a8886a1e9c8df477d7)
+- [Introduction to Webpack with practical examples](http://julienrenaux.fr/2015/03/30/introduction-to-webpack-with-practical-examples/)
+- [Intro to CSS 3D transforms
+
+](https://desandro.github.io/3dtransforms/docs/card-flip.html)

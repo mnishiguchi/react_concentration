@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classNames';
 
 // https://facebook.github.io/react/docs/reusable-components.html
 // https://github.com/airbnb/javascript/tree/master/react#ordering
@@ -14,15 +15,22 @@ const propTypes = {
 function Card({ uuid, text, isFlipped, isDone, isLocked, emitter }) {
   // Only when board is not locked, emit the flipped event.
   const clickHandler = (isLocked)
-                     ? ''
-                     : e => emitter.emit( 'flipped', { uuid, text } )
-                     ;
+                      ? ''
+                      : e => emitter.emit( 'flipped', {
+                                uuid: uuid,
+                                text: text
+                              });
+  const cardClasses = classNames({ flipped: isFlipped || isDone, done: isDone });
   return (
-    <div
-      className="card"
-      onClick={clickHandler}>
-      {isFlipped || isDone ? text : '?'}
-    </div>
+    <section className="card-holder">
+      <div
+        id="card"
+        className={cardClasses}
+        onClick={clickHandler}>
+        <figure className="front">?</figure>
+        <figure className="back">{text}</figure>
+      </div>
+    </section>
   )
 };
 
