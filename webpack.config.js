@@ -34,7 +34,7 @@ module.exports = {
   resolve: {
     root: path.resolve(__dirname),
     // To require('file') instead of require('file.js')
-    extensions: ['', '.js', '.jsx']
+    extensions: ['', '.js', '.jsx', 'json']
   },
   devServer: {
     contentBase: PATHS.dist,

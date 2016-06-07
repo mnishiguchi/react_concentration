@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import classNames from 'classNames';
+import { Icon }   from 'react-fa';
 
 // https://facebook.github.io/react/docs/reusable-components.html
 // https://github.com/airbnb/javascript/tree/master/react#ordering
@@ -28,7 +29,9 @@ function Card({ uuid, text, isFlipped, isDone, isLocked, emitter }) {
         className={cardClasses}
         onClick={clickHandler}>
         <figure className="front">?</figure>
-        <figure className="back">{text}</figure>
+        <figure className="back">
+          <Icon name={text} />
+        </figure>
       </div>
     </section>
   )

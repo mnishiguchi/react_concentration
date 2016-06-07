@@ -133,7 +133,7 @@ class App extends React.Component {
     this.setState({
       isPlaying: false,
       isOnPause: false,
-      score:     defaultProps.score,
+      score:     0,
       data:      this.initData(),
       firstCard: null
     });
