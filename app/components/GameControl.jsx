@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import classNames from 'classNames';
 
 // https://facebook.github.io/react/docs/reusable-components.html
 // https://github.com/airbnb/javascript/tree/master/react#ordering
@@ -15,6 +16,11 @@ function GameControl({ isPlaying, isOnPause, level, emitter }) {
   if ( isPlaying ) {
     text = isOnPause ? 'Resume' : 'Pause';
   }
+  const gameSwitchClasses = classNames( "game-switch", {
+    "start": text === 'Start',
+    "resume": text === 'Resume',
+    "pause": text === 'Pause'
+   });
   return (
     <div className="game-control">
 
@@ -36,7 +42,7 @@ function GameControl({ isPlaying, isOnPause, level, emitter }) {
           Reset
         </button>
         <button
-          className="game-switch"
+          className={gameSwitchClasses}
           onClick={e => emitter.emit( 'clickedSwitch' )}>
           {text}
         </button>

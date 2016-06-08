@@ -8,7 +8,7 @@ import ReactDOM from 'react-dom';
 // Load App.
 import App from './App';
 
-// Load font-awesome idcon names.
+// Load font-awesome icon names.
 import data from './faNames.js';
 
 // Bootstrap the app.

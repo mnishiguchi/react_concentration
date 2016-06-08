@@ -17,19 +17,7 @@ $ open http://localhost:8080
 ```
 
 ```bash
-$ git deploy # Deploying the dist directory to GitHub Pages
-```
-
-### [Deploying a subfolder to GitHub Pages](https://gist.github.com/cobyism/4730490)
-
-```bash
-# Deploying a subfolder to GitHub Pages
-$ git subtree push --prefix dist origin gh-pages
-```
-
-```bash
-# Delete a remote branch
-$ git push origin :gh-pages
+$ git deploy # Deploy the dist directory to GitHub Pages.
 ```
 
 ### User story guideline
@@ -85,38 +73,30 @@ Gold
 ### Components
 
 ```yaml
-# App component
-state:
-  isStarted: Boolean
-  score: Number
-  contents: Array<String>
-methods:
-  handleClickGameSwitch: Function
-  isMatchedPair: Function
-  isTwoCardFlipped: Function
-  handleTimeUp: Function
-
-# Card component
-props:
-  isFlipped: Boolean
-  content: String
-  handleClickGameSwitch: Function
-
-# Timer component
-props:
-  time: Number
-methods:
-  startTimer: Function
-  stopTimer: Function
-
-# Score component
-props:
-  score: Number
-  handleTimeUp: Function
-
-# Game switch component
-props:
-  isSwitchedOn: Boolean
+<div>
+  <NotificationSystem ref="notificationSystem" />
+  <section className="game">
+    <header>
+      <Score score={this.state.score} />
+      <Time seconds={this.state.seconds} />
+    </header>
+    <Board
+      data={this.state.data}
+      isLocked={!this.state.isPlaying || this.state.isOnPause}
+      isPlaying={this.state.isPlaying}
+      emitter={this.emitter}
+    />
+    <GameControl
+      isPlaying={this.state.isPlaying}
+      isOnPause={this.state.isOnPause}
+      level={this.state.level}
+      emitter={this.emitter}
+    />
+  </section>
+  <aside>
+    <PastScores pastScores={this.state.pastScores} />
+  </aside>
+</div>
 ```
 
 ### Memo
@@ -140,6 +120,18 @@ function BarGraph({ score }) {
 };
 ```
 
+#### [Deploying a subfolder to GitHub Pages](https://gist.github.com/cobyism/4730490)
+
+```bash
+# Deploying a subfolder to GitHub Pages
+$ git subtree push --prefix dist origin gh-pages
+```
+
+```bash
+# Delete a remote branch
+$ git push origin :gh-pages
+```
+
 ### References
 
 - [React.js Fundamentals](http://courses.reactjsprogram.com/courses/reactjsfundamentals)
@@ -153,6 +145,4 @@ function BarGraph({ score }) {
 - [EventEmitterバケツリレースタイル/フレームワークなしで小さくFluxするß](http://qiita.com/mizchi/items/6a3500e598ec36746509)
 - [入れ子のReact.ComponentでcomponentWillMountとcomponentDidMountが呼ばれる順番。](http://qiita.com/mmmpa/items/89a8886a1e9c8df477d7)
 - [Introduction to Webpack with practical examples](http://julienrenaux.fr/2015/03/30/introduction-to-webpack-with-practical-examples/)
-- [Intro to CSS 3D transforms
-
-](https://desandro.github.io/3dtransforms/docs/card-flip.html)
+- [Intro to CSS 3D transforms](https://desandro.github.io/3dtransforms/docs/card-flip.html)

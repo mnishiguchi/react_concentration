@@ -1,5 +1,6 @@
 body {
   min-width: 320px;
+  background-color: lighten($blue, 80%);
 }
 
 // NOTE: .container is used in multiple places.
@@ -12,15 +13,18 @@ body {
 }
 
 section.game {
+  margin-top: 2rem;
   width: auto;
   height: auto;
 }
 header {
   display: block;
   width: 100%;
-  height: 60px;
-  line-height: 60px;
-  background-color: goldenrod;
+  height: 80px;
+  line-height: 80px;
+  border-top-left-radius: .5rem;
+  border-top-right-radius: .5rem;
+  background-color: $gray-2;
   padding: 0 1rem;
   .score {
     display: inline-block;
@@ -37,9 +41,11 @@ header {
 .game-control {
   display: flex;
   width: 100%;
-  height: 60px;
-  line-height: 60px;
-  background-color: goldenrod;
+  height: 80px;
+  line-height: 80px;
+  border-bottom-left-radius: .5rem;
+  border-bottom-right-radius: .5rem;
+  background-color: $gray-2;
   padding: 0 1rem;
   .level-selector {
     flex-grow: 1;
@@ -59,14 +65,28 @@ header {
     display: flex;
     width: 70%;
     height: 100%;
-    padding: .8rem;
+    padding: 1rem 0;
+    button {
+      height: 1.5rem;
+    }
     .game-switch {
       flex-grow: 2;
       margin-left: .3rem;
+      &.start {
+        background-color: $green;
+      }
+      &.pause {
+        background-color: $yellow;
+      }
+      &.resume {
+        background-color: $blue;
+      }
     }
     .game-reset {
       flex-grow: 1;
       margin-left: .3rem;
+      background-color: $gray-3;
+      border-color: $red;
     }
   }
 }
