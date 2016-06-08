@@ -30,7 +30,7 @@ class App extends React.Component {
       level:     this.props.level,
       score:     this.props.score,
       seconds:   this.props.seconds,
-      data:      this.initData(),
+      data:      [],
       firstCard: null,
       pastScores: []
     };
@@ -59,6 +59,14 @@ class App extends React.Component {
       }
     });
 
+    // Handle force-reset.
+    this.emitter.addListener( 'reset', flippedCard => {
+      if (confirm("Resetting the game play. Are you sure?")) {
+        this.reset();
+      }
+
+    });
+
     // Handle flipping a card.
     this.emitter.addListener( 'flipped', flippedCard => {
       this.flipCard( flippedCard );
@@ -66,6 +74,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.initData();
   }
 
   componentWillUnmount() {
@@ -78,7 +87,7 @@ class App extends React.Component {
     data = data.concat( clone );
     data = this.shuffle( data );
 
-    return data.map( text => {
+    const initialized = data.map( text => {
       return {
         uuid:      shortid.generate(),
         isFlipped: false,
@@ -86,17 +95,19 @@ class App extends React.Component {
         text:      text
       };
     });
+
+    this.setState({ data: initialized });
   }
 
-  shuffle(a) {
-      var j, x, i;
-      for (i = a.length; i; i -= 1) {
+  shuffle( aArray ) {
+      let j, x, i;
+      for (i = aArray.length; i; i -= 1) {
           j = Math.floor(Math.random() * i);
-          x = a[i - 1];
-          a[i - 1] = a[j];
-          a[j] = x;
+          x = aArray[i - 1];
+          aArray[i - 1] = aArray[j];
+          aArray[j] = x;
       }
-      return a;
+      return aArray;
   }
 
   countDown() {
@@ -126,7 +137,6 @@ class App extends React.Component {
   start() {
     console.log( 'start' );
     this.reset();
-    if ( this.state.seconds === 0 ) { this.setDifficulty( this.state.level ); }
     this.setBackgroundImage();
     this.startTimer();
     this.setState({ isPlaying: true });
@@ -147,11 +157,13 @@ class App extends React.Component {
   reset() {
     console.log( 'reset' );
     this.pause();
+    this.initData();
     this.setState({
       isPlaying: false,
       isOnPause: false,
-      score:     0,
-      data:      this.initData(),
+      level:     this.props.level,
+      score:     this.props.score,
+      seconds:   this.props.seconds,
       firstCard: null
     });
   }
@@ -169,7 +181,7 @@ class App extends React.Component {
   }
 
   timeUp() {
-    console.log( 'Time is up!' );
+    alert( 'Time is up!' );
     this.stopTimer();
     this.pushScoreToHistory();
     this.setState({
@@ -283,6 +295,7 @@ class App extends React.Component {
           <GameControl
             isPlaying={this.state.isPlaying}
             isOnPause={this.state.isOnPause}
+            level={this.state.level}
             emitter={this.emitter}
           />
         </section>

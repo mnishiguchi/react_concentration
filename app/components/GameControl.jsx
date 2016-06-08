@@ -4,11 +4,12 @@ import React, { PropTypes } from 'react';
 // https://github.com/airbnb/javascript/tree/master/react#ordering
 const propTypes = {
   isPlaying: PropTypes.bool.isRequired,
-  isOnPause:  PropTypes.bool.isRequired,
+  isOnPause: PropTypes.bool.isRequired,
+  level:     PropTypes.number.isRequired,
   emitter:   PropTypes.object.isRequired
 };
 
-function GameControl({ isPlaying, isOnPause, emitter }) {
+function GameControl({ isPlaying, isOnPause, level, emitter }) {
   let text = 'Start';
 
   if ( isPlaying ) {
@@ -19,20 +20,28 @@ function GameControl({ isPlaying, isOnPause, emitter }) {
 
       <div className="level-selector">
         <label>Level:
-          <select onChange={e => emitter.emit( 'selectedLevel', parseInt(e.target.value) )} >
+          <select
+            value={level}
+            onChange={e => emitter.emit( 'selectedLevel', parseInt(e.target.value) )} >
              <option value="1">1</option>
              <option value="2">2</option>
              <option value="3">3</option>
           </select>
         </label>
       </div>
-      <button
-        className="game-switch"
-        onClick={e => emitter.emit( 'clickedSwitch' )}>
-        {text}
-      </button>
+      <div className="game-control-buttons">
+        <button
+          className="game-reset"
+          onClick={e => emitter.emit( 'reset' )}>
+          Reset
+        </button>
+        <button
+          className="game-switch"
+          onClick={e => emitter.emit( 'clickedSwitch' )}>
+          {text}
+        </button>
+      </div>
     </div>
-
   );
 };
 
