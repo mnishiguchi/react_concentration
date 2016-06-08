@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { EventEmitter }     from 'fbemitter';
-import * as shortid  from 'shortid';
+import NotificationSystem   from 'react-notification-system';
+import * as shortid         from 'shortid';
 import Time          from './components/Time';
 import Score         from './components/Score';
 import Board         from './components/Board';
@@ -34,6 +35,7 @@ class App extends React.Component {
       firstCard: null,
       pastScores: []
     };
+    this._notificationSystem = null;
   }
 
   // https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods
@@ -51,7 +53,7 @@ class App extends React.Component {
     });
 
     // Handle switching on/off the game.
-    this.emitter.addListener( 'clickedSwitch', () => {
+    this.emitter.addListener( 'clickedSwitch', (ev) => {
       if ( ! this.state.isPlaying ) {
         this.start();
       } else {
@@ -74,11 +76,21 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    // Set up the notification system.
+    this._notificationSystem = this.refs.notificationSystem;
+    // Initialize the data.
     this.initData();
   }
 
   componentWillUnmount() {
     this.emitter.removeAllListeners();
+  }
+
+  _addNotification( message ) {
+    this._notificationSystem.addNotification({
+      message: message,
+      level:   'success'
+    });
   }
 
   initData() {
@@ -136,6 +148,7 @@ class App extends React.Component {
 
   start() {
     console.log( 'start' );
+    this._addNotification( 'Have fun!' );
     this.reset();
     this.setBackgroundImage();
     this.startTimer();
@@ -163,9 +176,9 @@ class App extends React.Component {
       isOnPause: false,
       level:     this.props.level,
       score:     this.props.score,
-      seconds:   this.props.seconds,
       firstCard: null
     });
+    this.setDifficulty( this.state.level );
   }
 
   startTimer() {
@@ -181,7 +194,7 @@ class App extends React.Component {
   }
 
   timeUp() {
-    alert( 'Time is up!' );
+    this._addNotification( 'Time is up! Your score is ' + this.state.score );
     this.stopTimer();
     this.pushScoreToHistory();
     this.setState({
@@ -243,6 +256,7 @@ class App extends React.Component {
 
       // Add points.
       this.setState({ score: this.state.score + 1 });
+      this._addNotification( '+1' );
 
       // Mark the matching cards as 'done'.
       this.state.data.map( item => {
@@ -281,6 +295,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <NotificationSystem ref="notificationSystem" />
         <section className="game">
           <header>
             <Score score={this.state.score} />

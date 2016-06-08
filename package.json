@@ -18,6 +18,7 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-fa": "^4.1.2",
+    "react-notification-system": "^0.2.7",
     "shortid": "^2.2.6",
     "url-loader": "^0.5.7",
     "utils": "^0.3.1"
