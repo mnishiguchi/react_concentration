@@ -34,9 +34,6 @@ class App extends React.Component {
       firstCard: null,
       pastScores: []
     };
-
-    // Bind the methods to this instance.
-    this.countDown = this.countDown.bind( this );
   }
 
   // https://facebook.github.io/react/docs/component-specs.html#lifecycle-methods
@@ -69,14 +66,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // Set a random image every time the component is mounted.
-    let imageUrls = [
-      'http://mnishiguchi.com/images/masatoshi_chinatown_300.png',
-      'http://mnishiguchi.com/images/logo_200.png',
-      'http://mnishiguchi.com/images/mount_fuji_300_150.png'
-    ];
-    document.querySelector( '.board' ).style.backgroundImage =
-      'url(' + this.shuffle( imageUrls )[0] + ')';
   }
 
   componentWillUnmount() {
@@ -130,7 +119,7 @@ class App extends React.Component {
         this.setState({ level: level, seconds: 10 });
         return;
       default:
-        this.setState({ level: level, seconds: 30 });
+        this.setState({ level: 1, seconds: 30 });
     }
   }
 
@@ -138,6 +127,7 @@ class App extends React.Component {
     console.log( 'start' );
     this.reset();
     if ( this.state.seconds === 0 ) { this.setDifficulty( this.state.level ); }
+    this.setBackgroundImage();
     this.startTimer();
     this.setState({ isPlaying: true });
   }
@@ -167,7 +157,7 @@ class App extends React.Component {
   }
 
   startTimer() {
-    this.timerId = setInterval( this.countDown, 1000 );
+    this.timerId = setInterval( this.countDown.bind( this ), 1000 );
   }
 
   stopTimer() {
@@ -213,21 +203,22 @@ class App extends React.Component {
     // Update data.
     this.setState({ data: newData });
 
-    // Pause for 1 sec.
-    window.setTimeout( function() {
+    // Pause for .5 sec.
+    window.setTimeout( () => {
 
       // If it is the first card, remember it.
       if ( ! this.state.firstCard ) {
         this.setState({ firstCard: flippedCard });
 
       } else { // If it is the second card, compare the two cards.
+        this.setState({ isOnPause: true }); // Prevent the click.
         this.judgeCards( this.state.firstCard, flippedCard );
       }
 
       // Update data.
-      this.setState({ data: newData });
+      this.setState({ data: newData, isOnPause: false });
 
-    }.bind( this ), 1000 );
+    }, 500 );
   }
 
   /**
@@ -264,6 +255,17 @@ class App extends React.Component {
     });
   }
 
+  setBackgroundImage() {
+    // Set a random image every time the component is mounted.
+    let imageUrls = [
+      'http://mnishiguchi.com/images/masatoshi_chinatown_300.png',
+      'http://mnishiguchi.com/images/logo_200.png',
+      'http://mnishiguchi.com/images/mount_fuji_300_150.png'
+    ];
+    document.querySelector( '.board' ).style.backgroundImage =
+      'url(' + this.shuffle( imageUrls )[0] + ')';
+  }
+
   render() {
     return (
       <div>
@@ -275,6 +277,7 @@ class App extends React.Component {
           <Board
             data={this.state.data}
             isLocked={!this.state.isPlaying || this.state.isOnPause}
+            isPlaying={this.state.isPlaying}
             emitter={this.emitter}
           />
           <GameControl
