@@ -68,12 +68,28 @@ class App extends React.Component {
     });
   }
 
+  componentDidMount() {
+    // Set a random image every time the component is mounted.
+    let imageUrls = [
+      'http://mnishiguchi.com/images/masatoshi_chinatown_300.png',
+      'http://mnishiguchi.com/images/logo_200.png',
+      'http://mnishiguchi.com/images/mount_fuji_300_150.png'
+    ];
+    document.querySelector( '.board' ).style.backgroundImage =
+      'url(' + this.shuffle( imageUrls )[0] + ')';
+  }
+
   componentWillUnmount() {
     this.emitter.removeAllListeners();
   }
 
   initData() {
-    return this.props.data.map( text => {
+    let data  = this.shuffle( this.props.data ).slice( 0, 8 );
+    let clone = data.slice( 0 );
+    data = data.concat( clone );
+    data = this.shuffle( data );
+
+    return data.map( text => {
       return {
         uuid:      shortid.generate(),
         isFlipped: false,
@@ -81,6 +97,17 @@ class App extends React.Component {
         text:      text
       };
     });
+  }
+
+  shuffle(a) {
+      var j, x, i;
+      for (i = a.length; i; i -= 1) {
+          j = Math.floor(Math.random() * i);
+          x = a[i - 1];
+          a[i - 1] = a[j];
+          a[j] = x;
+      }
+      return a;
   }
 
   countDown() {

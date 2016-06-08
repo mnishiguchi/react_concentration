@@ -2,7 +2,10 @@
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
+  background: no-repeat center center;
   background-color: #ddd;
+  background-size: cover;
+  background-image: url("http://mnishiguchi.com/images/masatoshi_chinatown_300.png");
   width: 100%;
   height: auto;
   overflow: hidden;
@@ -39,7 +42,7 @@
           -1px 1px 0 $gray_3,
           1px 1px 0 $gray_3;
         background: gold;
-        border: 1px solid $gray_3;
+        outline: 1px solid $gray_3;
       }
       .back {
         font-size: 3rem;
