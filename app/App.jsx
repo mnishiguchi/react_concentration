@@ -6,7 +6,6 @@ import Time          from './components/Time';
 import Score         from './components/Score';
 import Board         from './components/Board';
 import GameControl   from './components/GameControl';
-import LevelSelector from './components/LevelSelector';
 import PastScores    from './components/PastScores';
 
 class App extends React.Component {
@@ -255,8 +254,9 @@ class App extends React.Component {
       console.log("areMatchingPair: yes");
 
       // Add points.
-      this.setState({ score: this.state.score + 1 });
-      this._addNotification( '+1' );
+      let points = this.state.seconds;
+      this.setState({ score: this.state.score + points });
+      this._addNotification( '+' + points );
 
       // Mark the matching cards as 'done'.
       this.state.data.map( item => {
@@ -293,9 +293,22 @@ class App extends React.Component {
   }
 
   render() {
+    const notificationStyles = {
+      NotificationItem: { // Override the notification item
+        DefaultStyle: { // Applied to every notification, regardless of the notification level
+          zIndex: 10,
+          fontSize: '20px',
+          background: 'rgba(22, 82, 124, 0.8)',
+          color: 'rgb(202,178,161)'
+        }
+      }
+    };
     return (
       <div>
-        <NotificationSystem ref="notificationSystem" />
+        <NotificationSystem
+          ref="notificationSystem"
+          style={notificationStyles}
+        />
         <section className="game">
           <header>
             <Score score={this.state.score} />
