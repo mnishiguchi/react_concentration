@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=PT+Serif);
+// @import url(https://fonts.googleapis.com/css?family=PT+Serif);
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700,900,400italic,300);
 // @import url(https://fonts.googleapis.com/css?family=Muli:400,400italic,300);
 // @import url(https://fonts.googleapis.com/css?family=Roboto:100italic);
@@ -20,11 +20,13 @@ $cyan: #75b5aa;
 $brown: #8f5536;
 $brick: #c84c0c;
 
-// Configure colors for the app.
 // $root-font-family: "PT Serif", 'Times New Roman', serif;
 $root-font-family: 'Lato', "Helvetica Neue", Arial, sans-serif;
-$root-font-size: 18px;
+$root-font-size: 16px;
 $root-line-height: 1.6;
+
+$large-breakpoint: 80em;
+$large-font-size: 20px;
 
 $navigation-color: #082031;
 
@@ -37,6 +39,3 @@ $heading-font-family: 'Lato', "Helvetica Neue", Arial, sans-serif;
 $heading-font-color: #425469;
 
 $border-color: $gray-4;
-
-$large-breakpoint: 38em;
-$large-font-size: 16px;
