@@ -19,7 +19,7 @@ class App extends React.Component {
   static defaultProps = {
     level:   1,
     score:   0,
-    seconds: 30
+    seconds: 100
   };
 
   constructor( props ) {
@@ -42,14 +42,6 @@ class App extends React.Component {
   componentWillMount() {
     // Create a emitter.
     this.emitter = new EventEmitter;
-
-    // Handle setting the level.
-    this.emitter.addListener( 'selectedLevel', level => {
-      if ( ! this.state.isPlaying ) {
-        console.log(level);
-        this.setDifficulty( level );
-      }
-    });
 
     // Handle switching on/off the game.
     this.emitter.addListener( 'clickedSwitch', (ev) => {
@@ -129,22 +121,6 @@ class App extends React.Component {
     }
   }
 
-  setDifficulty( level ) {
-    switch( level ) {
-      case 1:
-        this.setState({ level: level, seconds: 30 });
-        return;
-      case 2:
-        this.setState({ level: level, seconds: 20 });
-        return;
-      case 3:
-        this.setState({ level: level, seconds: 10 });
-        return;
-      default:
-        this.setState({ level: 1, seconds: 30 });
-    }
-  }
-
   start() {
     console.log( 'start' );
     this._addNotification( 'Have fun!' );
@@ -175,9 +151,9 @@ class App extends React.Component {
       isOnPause: false,
       level:     this.props.level,
       score:     this.props.score,
+      seconds:   this.props.seconds,
       firstCard: null
     });
-    this.setDifficulty( this.state.level );
   }
 
   startTimer() {
@@ -192,25 +168,15 @@ class App extends React.Component {
     this.timerId = null;
   }
 
-  timeUp() {
-    this._addNotification( 'Time is up! Your score is ' + this.state.score );
-    this.stopTimer();
-    this.pushScoreToHistory();
-    this.setState({
-      isPlaying: false,
-      isOnPause: false
-    });
-  }
-
-  pushScoreToHistory() {
-    // ES2015 array destructor.
-    let scores = [ ...this.state.pastScores ];
-    scores.unshift([
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
-      new Date().toLocaleString(),
-      this.state.score
-    ]);
-    this.setState({ pastScores: scores });
+  setBackgroundImage() {
+    // Set a random image every time the component is mounted.
+    let imageUrls = [
+      'http://mnishiguchi.com/images/masatoshi_chinatown_300.png',
+      'http://mnishiguchi.com/images/logo_200.png',
+      'http://mnishiguchi.com/images/mount_fuji_300_150.png'
+    ];
+    document.querySelector( '.board' ).style.backgroundImage =
+      'url(' + this.shuffle( imageUrls )[0] + ')';
   }
 
   // Flip the card that is specified by uuid.
@@ -251,7 +217,7 @@ class App extends React.Component {
    */
   judgeCards( first, second ) {
     if ( first.text === second.text ) {
-      console.log("areMatchingPair: yes");
+      console.log("matching: yes");
 
       // Add points.
       let points = this.state.seconds;
@@ -268,7 +234,7 @@ class App extends React.Component {
       });
     } else {
       // Do nothing if the cards are not matching.
-      console.log("areMatchingPair: no");
+      console.log("matching: no");
     }
 
     // Clear the first card.
@@ -279,17 +245,47 @@ class App extends React.Component {
       item.isFlipped = false;
       return item;
     });
+
+    // If the game is won, say Congratulations and stop the game play.
+    if ( this.isWon() ) {
+      this.resolveGame( 'Congratulations!!! You won. Score: ' + this.state.score );
+    }
   }
 
-  setBackgroundImage() {
-    // Set a random image every time the component is mounted.
-    let imageUrls = [
-      'http://mnishiguchi.com/images/masatoshi_chinatown_300.png',
-      'http://mnishiguchi.com/images/logo_200.png',
-      'http://mnishiguchi.com/images/mount_fuji_300_150.png'
-    ];
-    document.querySelector( '.board' ).style.backgroundImage =
-      'url(' + this.shuffle( imageUrls )[0] + ')';
+  resolveGame( message ) {
+    this._addNotification( message );
+    this.stopTimer();
+    this.pushScoreToHistory();
+    this.setState({
+      isPlaying: false,
+      isOnPause: false
+    });
+  }
+
+  isWon() {
+    let congratulations = true;
+
+    // If any undone card exists, the game is not yet won.
+    this.state.data.forEach( item => {
+      if ( ! item.isDone ) { congratulations = false; }
+    });
+
+    return congratulations;
+  }
+
+  timeUp() {
+    this.resolveGame( 'Time is up! Score: ' + this.state.score );
+  }
+
+  pushScoreToHistory() {
+    // ES2015 array destructor.
+    let scores = [ ...this.state.pastScores ];
+    scores.unshift([
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+      new Date().toLocaleString(),
+      this.state.score
+    ]);
+    this.setState({ pastScores: scores });
   }
 
   render() {
