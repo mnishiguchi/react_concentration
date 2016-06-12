@@ -44,7 +44,7 @@ class App extends React.Component {
     this.emitter = new EventEmitter;
 
     // Handle switching on/off the game.
-    this.emitter.addListener( 'clickedSwitch', (ev) => {
+    this.emitter.addListener( 'clickedSwitch', () => {
       if ( ! this.state.isPlaying ) {
         this.start();
       } else {
@@ -54,10 +54,9 @@ class App extends React.Component {
 
     // Handle force-reset.
     this.emitter.addListener( 'reset', flippedCard => {
-      if (confirm("Resetting the game play. Are you sure?")) {
+      if ( confirm( "Resetting the game play. Are you sure?" ) ) {
         this.reset();
       }
-
     });
 
     // Handle flipping a card.
@@ -182,6 +181,11 @@ class App extends React.Component {
   // Flip the card that is specified by uuid.
   flipCard( flippedCard ) {
 
+    // Reject if the same card is clicked twice.
+    if ( this.state.firstCard && this.state.firstCard.uuid === flippedCard.uuid ) {
+      return;
+    }
+
     // Flip the card.
     const newData = this.state.data.map( item => {
       if ( item.uuid === flippedCard.uuid ) {
@@ -216,7 +220,7 @@ class App extends React.Component {
    * @param  {Object} second Info about the card that contains uuid and text.
    */
   judgeCards( first, second ) {
-    if ( first.text === second.text ) {
+    if ( first.uuid !== second.uuid && first.text === second.text ) {
       console.log("matching: yes");
 
       // Add points.
