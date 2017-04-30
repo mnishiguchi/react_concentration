@@ -2,8 +2,8 @@
 
 Sometimes just called "Memory", it's a card game in which all of the cards are laid face down on a surface and two cards are flipped face up over each turn. If you get all the matching cards, you've won!
 
-Configured based on [react-intro](https://github.com/ga-wdi-lessons/react-intro) tutorial by GA.
-
+This app seems broken with latest versions of dependent npm modules so I re-made a similar app for my practice.
+- [https://github.com/mnishiguchi/react-concentration-2](https://github.com/mnishiguchi/react-concentration-2)
 
 ### Usage
 
